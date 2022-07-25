@@ -29,16 +29,16 @@ export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 kubectl krew install resource-capacity
 ```
 ```shell script
-kubectl kube-capacity
+kubectl resource-capacity
 ```
 ```shell script
-kubectl kube-capacity --pods
+kubectl resource-capacity --pods
 ```
 ```shell script
-kubectl kube-capacity --pods --util
+kubectl resource-capacity --pods --util
 ```
 ```shell script
-kubectl kube-capacity --util --sort cpu.util
+kubectl resource-capacity --util --sort cpu.util
 ```
 
 
