@@ -56,7 +56,7 @@ kubectl top nodes
 kubectl get events
 
 # Specific namespace events
-kubectl get events --namespace=kube-system
+kubectl get events --namespace=< namespace >
 ```
 
 #### Get all cluster nodes IPs and names
@@ -92,10 +92,10 @@ kubectl get namespace
 kubectl get pods -A
 
 # All pods in specific namespace
-kubectl get pods -n kube-system
+kubectl get pods -n < namespace >
 
 # All pods in specific namespace with more details
-kubectl get pods -n kube-system -o wide
+kubectl get pods -n < namespace > -o wide
 ```
 
 #### See all services
@@ -104,7 +104,7 @@ kubectl get pods -n kube-system -o wide
 kubectl get svc -A
 
 # All services in specific namespace
-kubectl get svc -n kube-system
+kubectl get svc -n < namespace >
 ```
 
 #### See all cluster pods load (top)
@@ -113,7 +113,7 @@ kubectl get svc -n kube-system
 kubectl top pods -A
 
 # All pods in specific namespace
-kubectl top pods -n kube-system
+kubectl top pods -n < namespace >
 ```
 #### Get formatted list of container images in pods
 Useful for listing all running containers in your cluster
@@ -124,8 +124,15 @@ kubectl get pods -A -o jsonpath='{..containers[*].name}' | tr -s ' ' '\n'
 # Option 2 - namespace, pod container images and tags
 kubectl get pods -A -o=jsonpath='{range .items[*]}{.metadata.namespace},{.metadata.name},{.spec.containers[*].image}{"\n"}' | tr -s ' ' '\n'
 
+# by specific namespace
+kubectl get pods -n < namespace > -o=jsonpath='{range .items[*]}{.metadata.namespace},{.metadata.name},{.spec.containers[*].image}{"\n"}' | tr -s ' ' '\n'
+
 # Option 3 - pod container images and tags
 kubectl get pods -A -o=jsonpath='{..containers[*].image}' | tr -s ' ' '\n'
+
+# by specific namespace
+kubectl get pods -n < namespace > -o=jsonpath='{..containers[*].image}' | tr -s ' ' '\n'
+
 ```
 
 #### Get list of pods sorted by restart count
@@ -160,6 +167,52 @@ kubectl top pods -A --sort-by=memory | head -20
 # Roll over all kubectl contexts and get top 20 CPU users
 for a in $(kubectl ctx); do echo -e "\n---$a"; kubectl ctx $a; kubectl top pods -A --sort-by=cpu | head -20; done
 ```
+
+#### Get, Edit the deployment,sts
+```shell script
+# Get deployments in all namespaces
+kubectl get deployment -A
+
+# Get deployment in specific namespace
+kubectl get deployment -n < namespace >
+
+# edit deployment in specific namespace
+kubectl edit deployment <deployment name> -n < namespace >
+
+# Get statefulsets (sts) in all namespaces
+kubectl get sts -A
+
+# Get statefulsets in specific namespace
+kubectl get sts -n < namespace >
+
+# edit sts in specific namespace
+kubectl edit sts <sts name> -n < namespace >
+```
+
+#### Get and edit Ingress
+```shell script
+# Get deployments in all namespaces
+kubectl get ing -A
+
+# Get deployment in specific namespace
+kubectl get ing -n < namespace >
+
+# edit deployment in specific namespace
+kubectl edit ing <ingress name> -n < namespace >
+```
+
+#### Get, Edit the configMaps
+```shell script
+# Get deployments in all namespaces
+kubectl get cm -A
+
+# Get deployment in specific namespace
+kubectl get cm -n < namespace >
+
+# edit deployment in specific namespace
+kubectl edit cm <cm name> -n < namespace >
+```
+
 
 #### Forward local port to a pod or service
 ```shell script
@@ -203,7 +256,7 @@ kubectl -n <namespace> rollout restart statefulsets <statefulset-name>
 
 
 ### Resources
-Most of the code above is self experimenting and reading the docs. Some are copied and modified to my needs from other resources...
+Most of the code above is self experimenting and reading the docs. Some are copied and modified to our needs from other resources...
 * https://kubernetes.io/docs/reference/kubectl/cheatsheet/
 * https://medium.com/flant-com/kubectl-commands-and-tips-7b33de0c5476
 * https://github.com/robscott/kube-capacity
