@@ -80,29 +80,40 @@ kubectl describe nodes | grep -A 3 "Name:\|Resource .*Requests .*Limits" | grep 
 kubectl describe nodes | grep -A 3 "Resource .*Requests .*Limits"
 ``` 
 
-#### Forward local port to a pod or service
+#### See all namespaces in a cluster
 ```shell script
-# Forward localhost port 8080 to a specific pod exposing port 8080
-kubectl port-forward -n namespace1 web 8080:8080
-
-# Forward localhost port 8080 to a specific web service exposing port 80
-kubectl port-forward -n namespace1 svc/web 8080:80
+# All pods in cluster
+kubectl get namespace
 ```
 
-#### Start a shell in a temporary pod
-Note - Pod will terminate once exited
+#### See all cluster pods
 ```shell script
-# Ubuntu
-kubectl run my-ubuntu --rm -i -t --restart=Never --image ubuntu -- bash
+# All pods in cluster across all namespaces
+kubectl get pods -A
 
-# CentOS
-kubectl run my-centos --rm -i -t --restart=Never --image centos:8 -- bash
+# All pods in specific namespace
+kubectl get pods -n kube-system
 
-# Alpine
-kubectl run my-alpine --rm -i -t --restart=Never --image alpine:3.10 -- sh
+# All pods in specific namespace with more details
+kubectl get pods -n kube-system -o wide
+```
 
-# Busybox
-kubectl run my-busybox --rm -i -t --restart=Never --image busybox -- sh
+#### See all services
+```shell script
+# All services in cluster
+kubectl get svc -A
+
+# All services in specific namespace
+kubectl get svc -n kube-system
+```
+
+#### See all cluster pods load (top)
+```shell script
+# All pods in cluster
+kubectl top pods -A
+
+# All pods in specific namespace
+kubectl top pods -n kube-system
 ```
 #### Get formatted list of container images in pods
 Useful for listing all running containers in your cluster
@@ -149,6 +160,32 @@ kubectl top pods -A --sort-by=memory | head -20
 # Roll over all kubectl contexts and get top 20 CPU users
 for a in $(kubectl ctx); do echo -e "\n---$a"; kubectl ctx $a; kubectl top pods -A --sort-by=cpu | head -20; done
 ```
+
+#### Forward local port to a pod or service
+```shell script
+# Forward localhost port 8080 to a specific pod exposing port 8080
+kubectl port-forward -n namespace1 web 8080:8080
+
+# Forward localhost port 8080 to a specific web service exposing port 80
+kubectl port-forward -n namespace1 svc/web 8080:80
+```
+
+#### Start a shell in a temporary pod
+Note - Pod will terminate once exited
+```shell script
+# Ubuntu
+kubectl run my-ubuntu --rm -i -t --restart=Never --image ubuntu -- bash
+
+# CentOS
+kubectl run my-centos --rm -i -t --restart=Never --image centos:8 -- bash
+
+# Alpine
+kubectl run my-alpine --rm -i -t --restart=Never --image alpine:3.10 -- sh
+
+# Busybox
+kubectl run my-busybox --rm -i -t --restart=Never --image busybox -- sh
+```
+
 ### Rolling restarts
 Roll a restart across all resources managed by a Deployment, DaemonSet or StatefulSet with **zero downtime**<br>
 **IMPORTANT**: For a Deployment or StatefulSet, a zero downtime is possible only if initial replica count is **higher than 1**!
