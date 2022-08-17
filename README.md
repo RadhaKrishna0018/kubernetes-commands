@@ -264,6 +264,7 @@ kubectl create deploy nginx --image nginx -n <namespace>
 ```shell script
 # Syntax
 kubectl cp <file-spec-src> <file-spec-dest>
+
 # Copy file from local machine to pod
 kubectl cp /path/to/file my-pod:/path/to/file
 
