@@ -253,6 +253,38 @@ kubectl -n <namespace> rollout restart daemonset <daemonset-name>
 kubectl -n <namespace> rollout restart statefulsets <statefulset-name>
 ```
 
+### Create a nginx deployment
+```shell script
+# Deployment
+kubectl create deploy nginx --image nginx -n <namespace>
+```
+
+### Copy files
+
+kubectl cp <file-spec-src> <file-spec-dest>
+
+```shell script
+# Syntax
+# Copy file from local machine to pod
+kubectl cp /path/to/file my-pod:/path/to/file
+
+# Copy file from a pod to a pod
+kubectl cp pod-1:my-file pod-2:my-file
+
+# Copy file from pod to your local machine
+kubectl cp my-pod:my-file my-file
+```
+
+### Copying directories
+```shell script
+# local to pod
+kubectl cp my-dir my-pod:my-dir
+
+# Specifying a container
+# In some cases, you may be running multiple containers on a pod. In which case, you will need to specify the container. You can do so with -c, which is consistent with most other kubectl commands
+kubectl cp my-file my-pod:my-file -c my-container-name
+```
+
 # helm commands
 
 ```shell script
