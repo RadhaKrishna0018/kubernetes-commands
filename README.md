@@ -253,7 +253,43 @@ kubectl -n <namespace> rollout restart daemonset <daemonset-name>
 kubectl -n <namespace> rollout restart statefulsets <statefulset-name>
 ```
 
+# helm commands
 
+```shell script
+# Add repo
+helm repo add <name_of_repo> <url>
+
+# repo  update (pulls latest charts)
+helm repo update
+
+# List of repositories
+helm repo ls
+
+# search repo
+helm search repo <name_of_repo>
+
+# show values
+helm show values {name_of_repo/deployment_name} --version <version>
+
+# To simulate a dry run which will give you detailed things what its about to install
+helm upgrade --install <installation_name> {name_of_repo/deployment_name} --namespace <namespace> --version <version> --dry-run
+
+# Install
+helm upgrade --install <installation_name> {name_of_repo/deployment_name} --namespace <namespace> --version <version>
+
+# remove repo
+helm repo rm <name_of_repo>
+```
+
+## update values
+```shell script
+# customize the whole values.yaml file
+helm upgrade --install <installation_name> {name_of_repo/deployment_name} --namespace <namespace> --version <version> -f values.yaml
+
+# To set only couple of values in values.yaml file
+helm upgrade --install <installation_name> {name_of_repo/deployment_name} --namespace <namespace> --version <version> --set <value_name>=<customized_value>
+
+```
 
 ### Resources
 Most of the code above is self experimenting and reading the docs. Some are copied and modified to our needs from other resources...
